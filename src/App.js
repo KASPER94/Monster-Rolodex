@@ -1,25 +1,41 @@
+import { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends Component {
+  constructor(){
+    super();
+    
+    this.state = {
+      name: {Firstname: "Léo", Lastname: 'Kaperski'},
+      CCI: "IQEQ"
+    }
+  }
+
+  render() {
+    return (
+      <div className="App">
+        <header className="App-header">
+          <img src={logo} className="App-logo" alt="logo" />
+          <p> 
+            Hello I am {this.state.name.Firstname} {this.state.name.Lastname} and i'm working at {this.state.CCI}
+          </p>
+          <button onClick={() => {
+            this.setState(() => {
+              return{
+                name: {Firstname:"Simon", Lastname:"Kaperski"}, CCI: "my own C"
+              }
+            }, () => {
+              console.log(this.state)
+            });
+          }}>
+            Change name
+          </button>
+        </header>
+      </div>
+    );
+  }
+  
 }
 
 export default App;
