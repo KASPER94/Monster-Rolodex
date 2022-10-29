@@ -1,39 +1,54 @@
 import { Component } from 'react';
-import logo from './logo.svg';
+
 import './App.css';
 
 class App extends Component {
   constructor(){
     super();
-    
+
     this.state = {
-      name: {Firstname: "Léo", Lastname: 'Kaperski'},
-      CCI: "IQEQ"
-    }
+      monsters:[],
+      searchField: ''
+    };
+  }
+  
+  componentDidMount() {
+    fetch('https://jsonplaceholder.typicode.com/users')
+      .then( (response) => response.json())
+      .then((users) => this.setState(() => {
+        return {monsters: users}
+      },
+      () => {console.log(this.state)}
+      ));
   }
 
   render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p> 
-            Hello I am {this.state.name.Firstname} {this.state.name.Lastname} and i'm working at {this.state.CCI}
-          </p>
-          <button onClick={() => {
-            this.setState(() => {
-              return{
-                name: {Firstname:"Simon", Lastname:"Kaperski"}, CCI: "my own C"
-              }
-            }, () => {
-              console.log(this.state)
-            });
-          }}>
-            Change name
-          </button>
-        </header>
-      </div>
-    );
+
+    const filteredMonsters = this.state.monsters.filter((monster) => {
+      return monster.name.toLocaleLowerCase().includes(this.state.searchField);
+      });
+
+    return <div className="App">
+      <input 
+        className='search-box' 
+        type='Search' 
+        placeholder='Search Monsters' 
+        onChange={(event) => {
+          const searchField = event.target.value.toLocaleLowerCase();
+          
+          this.setState(() => {
+            return {searchField};
+          }, () => {
+     
+          })
+        }}/>
+        {filteredMonsters.map((monster) => {
+        return <div key={monster.id}>
+          <h1>{monster.name}</h1>
+          </div>;
+      })}
+
+    </div>;
   }
   
 }
